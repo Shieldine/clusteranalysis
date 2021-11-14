@@ -1,5 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
+from src.kMeans import KMeans
 
 data = np.array([[1, 1], [1, 2], [2, 2], [1.5, 1], [2.1, 1.5], [1.4, 2.2],
                  [5, 1], [5, 2], [6, 2], [5.75, 0.5], [5.5, 1.6], [5.1, 1.9],
@@ -7,11 +7,6 @@ data = np.array([[1, 1], [1, 2], [2, 2], [1.5, 1], [2.1, 1.5], [1.4, 2.2],
                  ])
 k = 3
 
-
-def plot():
-    plt.scatter(data[:, 0], data[:, 1])
-    plt.show()
-
-
 if __name__ == '__main__':
-    plot()
+    analyser = KMeans(verbose=True)
+    analyser.find_clusters(3, data)

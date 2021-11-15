@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 
 
 class KMeans:
@@ -13,6 +12,7 @@ class KMeans:
         self.data = None
         self.clusters = None
         self.distances = None
+        self.sum_of_distances = 0
 
     def plot(self, include_centroids=False):
         plt.scatter(self.data[:, 0], self.data[:, 1])
@@ -62,6 +62,8 @@ class KMeans:
     def relocate_centroids(self):
         idx = 0
         for cluster in self.clusters:
+            if not cluster.any():
+                continue
             mean = np.transpose(cluster).mean(axis=1)
             self.centroids[idx] = mean
             idx += 1
@@ -82,14 +84,13 @@ class KMeans:
         self.k = k
         self.data = data
         self.clusters = [[] for _ in range(self.k)]
-        sum_of_distances = 0
 
         # initialize random centroids
         self.create_random_centroids()
 
         #  repeat till optimized or till max_iterations has been reached
         for iteration in range(self.max_iterations):
-            old_sum = sum_of_distances
+            old_sum = self.sum_of_distances
 
             #  assign points to centroids
             self.distances = self.assign_points_to_centroids()
@@ -98,14 +99,15 @@ class KMeans:
                 self.clusters[cluster] = np.array([self.data[i].tolist() for i in range(self.data.shape[0])
                                                    if self.distances[0][i] == cluster])
             #  calculate sum of distances
-            sum_of_distances = self.distances[1].sum()
+            self.sum_of_distances = self.distances[1].sum()
 
             #  plot if verbose is true
             if self.verbose:
+                print(self.sum_of_distances)
                 self.plot_with_clusters(include_centroids=True)
 
             #  break, if clusters didn't change
-            if sum_of_distances == old_sum:
+            if self.sum_of_distances == old_sum:
                 print(f"Finished after {iteration} iterations!")
                 break
 

@@ -9,4 +9,4 @@ k = 3
 
 if __name__ == '__main__':
     analyser = KMeans(verbose=True)
-    analyser.find_clusters(3, data)
+    analyser.find_clusters(k, data)

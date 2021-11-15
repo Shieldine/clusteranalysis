@@ -59,11 +59,18 @@ class KMeans:
 
         return assigned, distances
 
+    def relocate_centroids(self):
+        idx = 0
+        for cluster in self.clusters:
+            mean = np.transpose(cluster).mean(axis=1)
+            self.centroids[idx] = mean
+            idx += 1
+            if self.verbose:
+                print("Mean: ", mean)
+
     def plot_with_clusters(self, include_centroids=False):
-        for cluster in range(self.k):
-            cluster_data = np.array([self.data[i].tolist() for i in range(self.data.shape[0]) if self.distances[0][i] == cluster])
-            print(cluster_data)
-            plt.scatter(cluster_data[:, 0], cluster_data[:, 1])
+        for cluster in self.clusters:
+            plt.scatter(cluster[:, 0], cluster[:, 1])
         if include_centroids:
             for point in self.centroids:
                 plt.scatter(*point, marker='x', color='black')
@@ -75,7 +82,6 @@ class KMeans:
         self.k = k
         self.data = data
         self.clusters = [[] for _ in range(self.k)]
-        print(self.data)
 
         # initialize random centroids
         self.create_random_centroids()
@@ -83,8 +89,12 @@ class KMeans:
 
         # assign points to centroids
         self.distances = self.assign_points_to_centroids()
+        for cluster in range(self.k):
+            self.clusters[cluster] = np.array([self.data[i].tolist() for i in range(self.data.shape[0])
+                                               if self.distances[0][i] == cluster])
         if self.verbose:
             print(self.distances)
 
         self.plot_with_clusters(include_centroids=True)
-
+        self.relocate_centroids()
+        self.plot_with_clusters(include_centroids=True)

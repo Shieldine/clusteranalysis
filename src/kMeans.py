@@ -57,7 +57,7 @@ class KMeans:
             distances.append(distance_to_centroid)
             assigned.append(closest)
 
-        return assigned, distances
+        return np.array([assigned, distances])
 
     def relocate_centroids(self):
         idx = 0
@@ -82,19 +82,32 @@ class KMeans:
         self.k = k
         self.data = data
         self.clusters = [[] for _ in range(self.k)]
+        sum_of_distances = 0
 
         # initialize random centroids
         self.create_random_centroids()
-        # self.plot(include_centroids=True)
 
-        # assign points to centroids
-        self.distances = self.assign_points_to_centroids()
-        for cluster in range(self.k):
-            self.clusters[cluster] = np.array([self.data[i].tolist() for i in range(self.data.shape[0])
-                                               if self.distances[0][i] == cluster])
-        if self.verbose:
-            print(self.distances)
+        #  repeat till optimized or till max_iterations has been reached
+        for iteration in range(self.max_iterations):
+            old_sum = sum_of_distances
 
-        self.plot_with_clusters(include_centroids=True)
-        self.relocate_centroids()
-        self.plot_with_clusters(include_centroids=True)
+            #  assign points to centroids
+            self.distances = self.assign_points_to_centroids()
+            #  parse to clusters
+            for cluster in range(self.k):
+                self.clusters[cluster] = np.array([self.data[i].tolist() for i in range(self.data.shape[0])
+                                                   if self.distances[0][i] == cluster])
+            #  calculate sum of distances
+            sum_of_distances = self.distances[1].sum()
+
+            #  plot if verbose is true
+            if self.verbose:
+                self.plot_with_clusters(include_centroids=True)
+
+            #  break, if clusters didn't change
+            if sum_of_distances == old_sum:
+                print(f"Finished after {iteration} iterations!")
+                break
+
+            #  relocate centroids if clusters changed
+            self.relocate_centroids()

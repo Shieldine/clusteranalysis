@@ -2,6 +2,7 @@ import numpy as np
 from scipy.spatial.distance import cdist
 from sklearn.cluster import KMeans
 from src.kMeans import KMeans as ownK
+from src.agglomerative import Agglomerative as ownAgglo
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.cluster import AgglomerativeClustering
@@ -57,4 +58,17 @@ if __name__ == '__main__':
     # KMeans, own thingy
     # solver = KMeans(verbose=True)
     # solver.find_clusters(3, data)
-    pass
+
+    # own agglomerative clustering
+    agglo = ownAgglo(verbose=True)
+    agglo.find_clusters(data, 4)
+    agglo.plot_clusters()
+
+    # library, to compare
+    data_pd = pd.DataFrame(data, columns=['X', 'Y'])
+    hc = AgglomerativeClustering(n_clusters=4, affinity='euclidean', linkage='single')
+    plt.scatter(data_pd['X'], data_pd['Y'], c=hc.fit_predict(data))
+    plt.title("Clusters")
+    plt.ylabel("Y")
+    plt.xlabel("X")
+    plt.show()

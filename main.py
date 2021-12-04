@@ -1,5 +1,7 @@
 import numpy as np
-from src.kMeans import KMeans
+from scipy.spatial.distance import cdist
+from sklearn.cluster import KMeans
+from src.kMeans import KMeans as ownK
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.cluster import AgglomerativeClustering
@@ -12,38 +14,34 @@ data = np.array([[1, 1], [1, 2], [2, 2], [1.5, 1], [2.1, 1.5], [1.4, 2.2],
 k = 3
 
 
-def plot_error_graph():
-    errors = []
-    n = data.shape[0]
-    for n in range(1, n+1):
-        print("Computing for n = ", n)
-        if n == 0:
-            continue
-        solver = KMeans(verbose=False)
-        solver.find_clusters(n, data)
-        errors.append(solver.sum_of_distances)
-
-    plt.plot(range(1, n+1), errors)
-    plt.xticks(list(range(1, n)))
-    plt.xlabel('n')
-    plt.ylabel('sum of errors')
+def plot_distortion_graph():
+    distortions = []
+    K = range(1, data.shape[0])
+    # calculate distortions
+    for K in K:
+        meanModel = KMeans(n_clusters=k).fit(data)
+        meanModel.fit(data)
+        distortions.append(sum(np.min(cdist(data, meanModel.cluster_centers_,
+                                            'euclidean'), axis=1)) / data.shape[0])
+    # plot distortions
+    plt.plot(K, distortions, 'bx-')
+    plt.xlabel('K')
+    plt.ylabel('Distortion')
+    plt.title('The Elbow Method')
     plt.show()
 
 
-if __name__ == '__main__':
-    # KMeans, own thingy
-    # solver = KMeans(verbose=True)
-    # solver.find_clusters(3, data)
-
-    # agglomerative, using library
+def plot_sample_dendrogram():
     Z = linkage(data, method='ward')
 
-    # plotting dendrogram
+    # plot dendrogram
     dendro = dendrogram(Z)
     plt.title('Dendrogram')
     plt.ylabel('Euclidean distance')
     plt.show()
 
+
+def plot_all_linkages():
     data_pd = pd.DataFrame(data, columns=['X', 'Y'])
     linkages = ['single', 'average', 'complete', 'ward']
     for linkage in linkages:
@@ -53,3 +51,10 @@ if __name__ == '__main__':
         plt.ylabel("Y")
         plt.xlabel("X")
         plt.show()
+
+
+if __name__ == '__main__':
+    # KMeans, own thingy
+    # solver = KMeans(verbose=True)
+    # solver.find_clusters(3, data)
+    pass

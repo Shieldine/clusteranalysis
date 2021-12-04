@@ -2,6 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def calculate_euclidean_distance(point_a, point_b):
+    return np.sqrt(np.sum(np.square(point_a - point_b)))
+
+
 class KMeans:
 
     def __init__(self, max_iterations=50, verbose=False):
@@ -31,9 +35,6 @@ class KMeans:
             centroid = np.random.uniform(centroid_min_coordinate, centroid_max_coordinate, self.data.shape[1])
             self.centroids.append(centroid)  # add created centroid to the list
 
-    def calculate_euclidean_distance(self, point_a, point_b):
-        return np.sqrt(np.sum(np.square(point_a - point_b)))
-
     def assign_points_to_centroids(self):
         distances = []  # for distances between the points and the centroids
         assigned = []  # for the assigned centroids
@@ -45,7 +46,7 @@ class KMeans:
             # for each centroid
             for centroid in range(self.k):
                 # calculate distances from the current point to all centroids
-                current_distance = self.calculate_euclidean_distance(
+                current_distance = calculate_euclidean_distance(
                     self.centroids[centroid], self.data[point])
                 point_distances = np.append(point_distances, current_distance)
 

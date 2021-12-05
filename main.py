@@ -3,6 +3,7 @@ from scipy.spatial.distance import cdist
 from sklearn.cluster import KMeans
 from src.kMeans import KMeans as ownK
 from src.agglomerative import Agglomerative as ownAgglo
+from src.divisive import Divisive as ownDiv
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.cluster import AgglomerativeClustering
@@ -60,15 +61,11 @@ if __name__ == '__main__':
     # solver.find_clusters(3, data)
 
     # own agglomerative clustering
-    agglo = ownAgglo(verbose=True)
-    agglo.find_clusters(data, 4)
-    agglo.plot_clusters()
+    # agglo = ownAgglo(verbose=True)
+    # agglo.find_clusters(data, 4)
+    # agglo.plot_clusters()
 
-    # library, to compare
-    data_pd = pd.DataFrame(data, columns=['X', 'Y'])
-    hc = AgglomerativeClustering(n_clusters=4, affinity='euclidean', linkage='single')
-    plt.scatter(data_pd['X'], data_pd['Y'], c=hc.fit_predict(data))
-    plt.title("Clusters")
-    plt.ylabel("Y")
-    plt.xlabel("X")
-    plt.show()
+    # own divisive clustering
+    div = ownDiv(verbose=True)
+    div.find_clusters(data, 5)
+    div.plot_clusters()

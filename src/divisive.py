@@ -16,7 +16,6 @@ class Divisive:
 
         # define all points in one cluster
         self.clusters = [data]
-        print(self.clusters)
 
         while len(self.clusters) < k:
             # choose cluster to split
@@ -39,8 +38,8 @@ class Divisive:
         square_errors = []
         for cluster in self.clusters:
             temp_errors = []
+            mean = np.transpose(cluster).mean(axis=1)
             for point in cluster:
-                mean = np.transpose(cluster).mean(axis=1)
                 temp_errors.append(np.square(calculate_euclidean_distance(point, mean)))
             square_errors.append(sum(temp_errors))
         return square_errors.index(max(square_errors))

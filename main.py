@@ -11,7 +11,8 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 
 data = np.array([[1, 1], [1, 2], [2, 2], [1.5, 1], [2.1, 1.5], [1.4, 2.2],
                  [5, 1], [5, 2], [6, 2], [5.75, 0.5], [5.5, 1.6], [5.1, 1.9],
-                 [4, 5], [4, 6], [3, 5], [3.25, 4.8], [3.5, 5.4], [3.3, 5.9]
+                 [4, 5], [4, 6], [3, 5], [3.25, 4.8], [3.5, 5.4], [3.3, 5.9],
+                 [3.5, 3]
                  ])
 k = 3
 
@@ -57,15 +58,15 @@ def plot_all_linkages():
 
 if __name__ == '__main__':
     # KMeans, own thingy
-    # solver = KMeans(verbose=True)
-    # solver.find_clusters(3, data)
+    solver = ownK(verbose=True)
+    solver.find_clusters(4, data)
 
     # own agglomerative clustering
-    # agglo = ownAgglo(verbose=True)
-    # agglo.find_clusters(data, 4)
-    # agglo.plot_clusters()
+    agglo = ownAgglo(verbose=True)
+    agglo.find_clusters(data, 4)
+    agglo.plot_clusters()
 
     # own divisive clustering
     div = ownDiv(verbose=True)
-    div.find_clusters(data, 5)
+    div.find_clusters(data, 4)
     div.plot_clusters()

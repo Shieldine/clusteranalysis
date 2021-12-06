@@ -4,6 +4,7 @@ from sklearn.cluster import KMeans
 from src.kMeans import KMeans as ownK
 from src.agglomerative import Agglomerative as ownAgglo
 from src.divisive import Divisive as ownDiv
+from src.DBSCAN import DBSCAN
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.cluster import AgglomerativeClustering
@@ -58,15 +59,19 @@ def plot_all_linkages():
 
 if __name__ == '__main__':
     # KMeans, own thingy
-    solver = ownK(verbose=True)
-    solver.find_clusters(4, data)
+    #solver = ownK(verbose=True)
+    #solver.find_clusters(4, data)
 
     # own agglomerative clustering
-    agglo = ownAgglo(verbose=True)
-    agglo.find_clusters(data, 4)
-    agglo.plot_clusters()
+    #agglo = ownAgglo(verbose=True)
+    #agglo.find_clusters(data, 4)
+    #agglo.plot_clusters()
 
     # own divisive clustering
-    div = ownDiv(verbose=True)
-    div.find_clusters(data, 4)
-    div.plot_clusters()
+    #div = ownDiv(verbose=True)
+    #div.find_clusters(data, 4)
+    #div.plot_clusters()
+
+    scanner = DBSCAN(verbose=True)
+    scanner.find_clusters(data, 1, 3)
+    scanner.plot_clusters()

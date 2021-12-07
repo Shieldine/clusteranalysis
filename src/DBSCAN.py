@@ -84,7 +84,6 @@ class DBSCAN:
     def plot_clusters(self):
         for cluster in self.clusters:
             cluster = np.array(cluster)
-            print(cluster)
             plt.scatter(cluster[:, 0], cluster[:, 1])
         plt.title("Clusters according to own DBSCAN")
         plt.xlabel("X")

@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.spatial.distance import cdist
 from sklearn.cluster import KMeans
+from sklearn import datasets
 from src.kMeans import KMeans as ownK
 from src.agglomerative import Agglomerative as ownAgglo
 from src.divisive import Divisive as ownDiv
@@ -58,20 +59,23 @@ def plot_all_linkages():
 
 
 if __name__ == '__main__':
+    n_samples = 500
+    noisy_circles = datasets.make_circles(n_samples=n_samples, factor=0.5, noise=0.05)
     # KMeans, own thingy
-    #solver = ownK(verbose=True)
-    #solver.find_clusters(4, data)
+    solver = ownK(verbose=True)
+    solver.find_clusters(2, noisy_circles[0])
 
     # own agglomerative clustering
-    #agglo = ownAgglo(verbose=True)
-    #agglo.find_clusters(data, 4)
-    #agglo.plot_clusters()
+    agglo = ownAgglo(verbose=True)
+    agglo.find_clusters(noisy_circles[0], 2)
+    agglo.plot_clusters()
 
     # own divisive clustering
-    #div = ownDiv(verbose=True)
-    #div.find_clusters(data, 4)
-    #div.plot_clusters()
+    div = ownDiv(verbose=True)
+    div.find_clusters(noisy_circles[0], 2)
+    div.plot_clusters()
 
+    # own dbscan
     scanner = DBSCAN(verbose=True)
-    scanner.find_clusters(data, 1, 3)
+    scanner.find_clusters(noisy_circles[0], 0.2, 3)
     scanner.plot_clusters()

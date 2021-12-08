@@ -59,7 +59,7 @@ def plot_all_linkages():
 
 
 if __name__ == '__main__':
-    n_samples = 500
+    n_samples = 100
     noisy_circles = datasets.make_circles(n_samples=n_samples, factor=0.5, noise=0.05)
     # KMeans, own thingy
     solver = ownK(verbose=True)

@@ -28,12 +28,10 @@ class KMeans:
         plt.show()
 
     def create_random_centroids(self):
-        centroid_min_coordinate = self.data.min().min()  # find point with smallest coordinates
-        centroid_max_coordinate = self.data.max().max()  # find point with biggest coordinates
-        for centroid in range(self.k):  # repeat k-times
-            # create random coordinates with previously found smallest and biggest as borders
-            centroid = np.random.uniform(centroid_min_coordinate, centroid_max_coordinate, self.data.shape[1])
-            self.centroids.append(centroid)  # add created centroid to the list
+        # randomly choose k points in dataset
+        idx = np.random.choice(len(self.data), self.k, replace=False)
+        # save to variable
+        self.centroids = self.data[idx, :]
 
     def assign_points_to_centroids(self):
         distances = []  # for distances between the points and the centroids

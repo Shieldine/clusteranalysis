@@ -29,10 +29,9 @@ class Agglomerative:
             for second_cluster in self.clusters:
                 if cluster == second_cluster:
                     continue
-                else:
-                    clusters.append(self.clusters.index(cluster))
-                    second_clusters.append(self.clusters.index(second_cluster))
-                    distances.append(calculate_cluster_distance(cluster, second_cluster))
+                clusters.append(self.clusters.index(cluster))
+                second_clusters.append(self.clusters.index(second_cluster))
+                distances.append(calculate_cluster_distance(cluster, second_cluster))
         return pd.DataFrame({'cluster1': clusters,
                              'cluster2': second_clusters,
                              'distances': distances},

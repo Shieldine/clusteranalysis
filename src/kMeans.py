@@ -51,6 +51,7 @@ class KMeans:
             # choose closest centroid
             closest = np.where(point_distances == np.amin(point_distances))[0].tolist()[0]
             distance_to_centroid = np.amin(point_distances)
+            # print(point_distances, " ", closest)
 
             # append to lists
             distances.append(distance_to_centroid)

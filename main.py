@@ -20,19 +20,39 @@ k = 3
 
 def plot_distortion_graph():
     distortions = []
-    K = range(1, data.shape[0])
+    K = []
     # calculate distortions
-    for K in K:
-        meanModel = KMeans(n_clusters=k).fit(data)
+    for k in range(1, data.shape[0]):
+        meanModel = KMeans(n_clusters=k)
         meanModel.fit(data)
         distortions.append(sum(np.min(cdist(data, meanModel.cluster_centers_,
                                             'euclidean'), axis=1)) / data.shape[0])
+        K.append(k)
     # plot distortions
     plt.plot(K, distortions, 'bx-')
     plt.xlabel('K')
     plt.ylabel('Distortion')
     plt.title('The Elbow Method')
     plt.show()
+
+
+def plot_inertia_graph():
+    inertias = []
+    K = []
+    # calculate distortions
+    for k in range(1, data.shape[0]):
+        meanModel = KMeans(n_clusters=k)
+        meanModel.fit(data)
+        inertias.append(meanModel.inertia_)
+        K.append(k)
+
+    # plot distortions
+    plt.plot(K, inertias, '-o')
+    plt.xlabel('K')
+    plt.ylabel('Inertia')
+    plt.title('The Elbow Method')
+    plt.show()
+    print(inertias)
 
 
 def plot_sample_dendrogram():
@@ -58,6 +78,10 @@ def plot_all_linkages():
 
 
 if __name__ == '__main__':
+    plot_distortion_graph()
+    plot_inertia_graph()
+
+    '''
     n_samples = 200
     noisy_circles = datasets.make_circles(n_samples=n_samples, factor=0.5, noise=0.05)
     # KMeans, own thingy
@@ -78,3 +102,4 @@ if __name__ == '__main__':
     scanner = DBSCAN(verbose=True)
     scanner.find_clusters(noisy_circles[0], 0.2, 3)
     scanner.plot_clusters()
+    '''
